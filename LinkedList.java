@@ -1,6 +1,7 @@
 package com.company.LinkedList;
+import java.util.Iterator;
 
-public class LinkedList<T>  {
+public class LinkedList<T> implements Iterable<T> {
     private Node<T> first;
     private Node<T> last;
     private int size = 0;
@@ -31,10 +32,50 @@ public class LinkedList<T>  {
         }
         return temp.getValue();
     }
+    public void clear(){
+        for(Node<T> currentNode = first; currentNode!=null;){
+            Node<T> nextNode = currentNode.getNextElement();
+            currentNode.setValue(null);
+            currentNode.setPrevElement(null);
+            currentNode.setNextElement(last);
+            currentNode=nextNode;
+        }
+        size = 0;
+    }
     public int size(){
         return size;
     }
 
+
+    @Override
+    public Iterator<T> iterator() {
+        return new Iterator<T>() {
+            int index = 0;
+            @Override
+            public boolean hasNext() {
+                return index<size;
+            }
+
+            @Override
+            public T next() {
+                return get(index++);
+            }
+        };
+    }
+    public Iterator<T> descendingIterator(){
+        return new Iterator<T>() {
+            int index = size-1;
+            @Override
+            public boolean hasNext() {
+                return index>=0;
+            }
+
+            @Override
+            public T next() {
+                return get(index--);
+            }
+        };
+    }
     private class Node<T> {
         private Node<T> nextElement;
         private Node<T> prevElement;
